@@ -9,6 +9,7 @@ import {
 // Pages
 import BlogListPage from "./components/page/BlogListPage";
 import ContentPage from "./components/page/ContentPage";
+import TagFilteredPage from "./components/page/TagFilteredPage";
 
 function App(props) {
   return (
@@ -16,7 +17,8 @@ function App(props) {
       <BrowserRouter>
         <Routes>
           <Route index element={<BlogListPage />} />
-          <Route path="/content-page" element={<ContentPage />} />
+          <Route path="/posts/:postId" element={<ContentPage />} /> {/* 동적 경로 변경 */}
+          <Route path="/tags/:tagName" element={<TagFilteredPage />} />
         </Routes>
       </BrowserRouter>
     </>

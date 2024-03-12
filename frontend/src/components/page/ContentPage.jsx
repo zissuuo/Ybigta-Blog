@@ -1,10 +1,8 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
-import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // 원하는 스타일 테마를 선택하세요. 예: vs, xcode, prism, atomDark 등
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -37,40 +35,38 @@ const Image = ({node, ...props}) => (
     />
   );
 
-
 const ContentPage = () => {
-
-    const [posts, setPosts] = useState([]); // 서버로부터 받은 포스트들을 저장할 상태
-    
+    const { postId } = useParams(); // URL에서 postId를 추출
+    console.log(postId);
+    const [post, setPost] = useState(null);
 
     useEffect(() => {
-      // 서버로부터 포스트 데이터를 가져옵니다.
-      fetch('http://localhost:8000/posts') // 이 URL은 예시이며, 실제 서버의 URL을 사용해야 합니다.
+        fetch(`http://localhost:8000/posts/${postId}`) // postId를 사용하여 해당 글 정보를 불러옵니다.
         .then(response => response.json())
-        .then(data => setPosts(data))
+        .then(data => setPost(data))
         .catch(error => console.log(error));
-    }, []);
-  
-    return (
-    <Wrapper>
-      <div>
-        {posts.length > 0 && (
-          <div>
-            <h2>{posts[0].title}</h2>
-            {posts[0].tags.map((tag, index) => (
-              <p key={index}>#{tag}</p> // 각 태그에 고유 key 값을 제공합니다.
-            ))}
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{ code: CodeBlock, img: Image }}>
-              {posts[0].content}
-            </ReactMarkdown>
-          </div>
-        )}
-      </div>
-    </Wrapper>
-    );
+    }, [postId]);
 
+    if (!post) return <div>Loading...</div>;
+
+    return (
+        <Wrapper>
+            <div>
+                <h2>{post.title}</h2>
+                {post.tags && post.tags.map((tag, index) => (
+                    <p key={index}>#{tag}</p>
+                ))}
+                <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{ code: CodeBlock, img: Image }}
+                >
+                    {post.content}
+                </ReactMarkdown>
+            </div>
+        </Wrapper>
+    );
 };
+
+
 
 export default ContentPage;
