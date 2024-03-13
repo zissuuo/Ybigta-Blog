@@ -3,22 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { useEffect, useState } from 'react';
 
-/* 컴포넌트 임포트 */
-import Button from '../ui/Button';
-
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 40px;
 `;
 
-const TagButton = styled.button`
-    margin-right: 10px;
-    background-color: #e0e0e0;
-    border: none;
-    cursor: pointer;
+const TagContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    //width: 600px;
+    gap: 7px;
 `;
 
+const Tags = styled.span`
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 8px;
+    padding-left: 8px;
+    background-color: #EBEBEB;
+    text-align: center;
+    font-size: 13px;
+    justify-content: center;
+    color: #666666;
+    border-radius: 5px;
+`;
 
 const BlogListPage = () => {
 
@@ -62,10 +74,20 @@ const BlogListPage = () => {
         filterPostsByTag(tag);
     };
 
+    const allTags = posts.reduce((acc, post) => [...acc, ...post.tags], []);
+    const uniqueTags = [...new Set(allTags)];
+
 
     return (
     <Wrapper>
         <h1>블로그 메인/리스트 페이지</h1>
+        <TagContainer>
+            {uniqueTags.map((tag, tagIndex) => (
+                <Tags key={tagIndex} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }} onClick={(event) => handleTagClick(tag, event)}>
+                    #{tag}
+                </Tags>     
+            ))}
+        </TagContainer>
         <div>
             {posts.map((post, index) => (
                 <div key={index}>
@@ -74,9 +96,9 @@ const BlogListPage = () => {
                     </h2>
                     <h4>{post.outline}</h4>
                     {post.tags.map((tag, tagIndex) => (
-                        <span key={tagIndex} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }} onClick={(event) => handleTagClick(tag, event)}>
+                        <Tags key={tagIndex} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }} onClick={(event) => handleTagClick(tag, event)}>
                             #{tag}
-                        </span>
+                        </Tags>
                     ))}
                 </div>
             ))}
