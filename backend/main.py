@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import Any
 from bson import ObjectId
 from pydantic_core import core_schema
+from typing import Optional
 
 
 app = FastAPI()
@@ -80,11 +81,11 @@ class Post(BaseModel):
 
 ### MongoDB에서 데이터 조회
 
-# 모든 포스트 조회
-@app.get("/posts/", response_model=List[Post])
-async def read_posts():
-    posts = await MongoDB.db.find().to_list(100)
-    return posts
+# # 모든 포스트 조회
+# @app.get("/posts/", response_model=List[Post])
+# async def read_posts():
+#     posts = await MongoDB.db.find().to_list(100)
+#     return posts
 
 # 특정 포스트 조회
 @app.get("/posts/{post_id}", response_model=Post)
@@ -97,3 +98,14 @@ async def read_post(post_id: str):
     
     # Pydantic 모델 인스턴스를 alias를 사용하여 반환
     return Post(**post).model_dump(by_alias=True)   
+
+# 태그 필터링 조회
+@app.get("/posts/", response_model=List[Post])
+async def read_posts(tag: Optional[str] = None):
+    if tag:
+        # 태그가 제공된 경우, 해당 태그를 포함하는 포스트만 조회
+        posts = await MongoDB.db.find({"tags": tag}).to_list(100)
+    else:
+        # 태그가 제공되지 않은 경우, 모든 포스트 조회
+        posts = await MongoDB.db.find().to_list(100)
+    return posts

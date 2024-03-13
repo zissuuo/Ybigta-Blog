@@ -18,7 +18,7 @@ const TagFilteredPage = () => {
             {filteredPosts.map((post) => (
                 <div key={post.id}>
                     <h2>{post.title}</h2>
-                    <p>{post.content}</p> {/* 예시로 내용을 직접 보여주고 있습니다. 실제로는 필요에 따라 다르게 구성할 수 있습니다. */}
+                    <p>{post.outline}</p> {/* 예시로 내용을 직접 보여주고 있습니다. 실제로는 필요에 따라 다르게 구성할 수 있습니다. */}
                 </div>
             ))}
         </div>
