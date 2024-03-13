@@ -1,84 +1,100 @@
-[
-    {
+[{
+    "_id": {
+      "$oid": "65f0f92aefbb68ad8effb48e"
+    },
     "title": "MongoDB로 블로그 만들기",
     "tags": [
-        "MongoDB",
-        "Frontend",
-        "Backend"
+      "MongoDB",
+      "Frontend",
+      "Backend"
     ],
     "author": "김와빅",
     "outline": "블로그 구축의 여정을 소개하고자 합니다. MongoDB를 활용하여 데이터베이스를 구축하고, 프론트엔드와 백엔드를 구성하는 방법을 설명합니다.",
     "content": "# 여기부터 마크다운 이야\n\n## 2024-03-08 10:14 작성\n\n### 샘플데이터 제작\n\n이미지도 첨부 하기 싫음\n\n![Imgur](https://i.imgur.com/SxoFw60.jpg)\n\n1. ㅎㅇㅎㅇ\n2. 안녕하세요?\n\n프론트 렌더링을 위한 **마크다운**입니다.\n\n이것저것 `시도중` ㅋㅋ\n\n```python\nimport pandas as pd\n\nprint(\"Hello Wordl!\")\n```\n\n잘 되겠죠~? ㅠ",
     "createdAt": "2024-03-11",
-    "catogory": "Data Science TEAM",
-    "profileImagePath": "images/김와빅.png"
+    "profileImagePath": "images/김와빅.png",
+    "categories": "Data Science TEAM"
+  },
+  {
+    "_id": {
+      "$oid": "65f0f92aefbb68ad8effb48f"
     },
-    {
     "title": "SQL 3일만에 합격하기",
     "tags": [
-        "SQL",
-        "SQLD"
+      "SQL",
+      "SQLD"
     ],
     "author": "김연세",
     "outline": "SQLD 자격증 취득을 위한 공부 방법을 소개합니다. 3일만에 합격하는 비결을 공유합니다.",
     "content": "# 두번째 예시\n\n## 2024-03-08 10:14 작성\n\n### 샘플데이터 제작\n\n이미지도 첨부\n\n![output.png](example%20567f2d08d7a24529a59717e235a25fa2/output.png)\n\n1. ㅎㅇㅎㅇ\n2. 안녕하세요?\n\n프론트 렌더링을 위한 **마크다운**입니다.\n\n이것저것 `시도중` ㅋㅋ\n\n```python\nimport pandas as pd\n\nprint(\"Hello Wordl!\")\n```\n\n잘 되겠죠~? ㅠ",
     "createdAt": "2024-03-08",
-    "catogory": "Data Analytics TEAM",
-    "profileImagePath": "images/김연세.png"
+    "profileImagePath": "images/김연세.png",
+    "categories": "Data Analytics TEAM"
+  },
+  {
+    "_id": {
+      "$oid": "65f0f92aefbb68ad8effb490"
     },
-    {
     "title": "AWS 공부",
     "tags": [
-    "AWS",
-    "Backend"
+      "AWS",
+      "Backend"
     ],
     "author": "최와빅",
     "outline": "AWS를 공부하고자 하는 분들을 위한 가이드입니다. AWS의 기초부터 심화까지 다루고 있습니다.",
     "content": "# 세번째 예시\n\n### 샘플데이터 제작\n\n이미지도 첨부\n\n![output.png](example%20567f2d08d7a24529a59717e235a25fa2/output.png)\n\n1. ㅎㅇㅎㅇ\n2. 안녕하세요?\n\n프론트 렌더링을 위한 **마크다운**입니다.\n\n이것저것 `시도중` ㅋㅋ\n\n```python\nimport pandas as pd\n\nprint(\"Hello Wordl!\")\n```\n\n잘 되겠죠~? ㅠ",
     "createdAt": "2024-01-19",
-    "catogory": "Data Engineering TEAM",
-    "profileImagePath": "images/김연세.png"
+    "profileImagePath": "images/김연세.png",
+    "categories": "Data Engineering TEAM"
+  },
+  {
+    "_id": {
+      "$oid": "65f0f92aefbb68ad8effb491"
     },
-    {
-        "title": "React로 SPA 애플리케이션 만들기",
-        "tags": [
-            "React",
-            "SPA",
-            "Frontend"
-        ],
-        "outline": "React를 활용하여 SPA 애플리케이션을 만드는 방법을 소개합니다. 초기 설정부터 배포까지 단계별로 설명합니다.",
-        "author": "박프론트",
-        "content": "# 프로젝트 소개\n\n## 2024-03-15 11:30 작성\n\n### 개발 환경 설정\n\n이미지 첨부 예정 없음\n\n![Image](https://i.imgur.com/linkToImage.jpg)\n\n1. 프로젝트 설정\n2. 개발 환경 구축\n\nSPA 개발을 위한 **React** 사용법을 소개합니다.\n\n초기 설정부터 배포까지 `단계별` 설명.\n\n```javascript\nimport React from 'react';\n\nconsole.log(\"Welcome to SPA world!\");\n```\n\n쉽고 재밌게 따라와 보세요!",
-        "createdAt": "2024-03-15",
-        "catogory": "Web Development TEAM",
-        "profileImagePath": "images/박프론트.png"
+    "title": "React로 SPA 애플리케이션 만들기",
+    "tags": [
+      "React",
+      "SPA",
+      "Frontend"
+    ],
+    "outline": "React를 활용하여 SPA 애플리케이션을 만드는 방법을 소개합니다. 초기 설정부터 배포까지 단계별로 설명합니다.",
+    "author": "박프론트",
+    "content": "# 프로젝트 소개\n\n## 2024-03-15 11:30 작성\n\n### 개발 환경 설정\n\n이미지 첨부 예정 없음\n\n![Image](https://i.imgur.com/linkToImage.jpg)\n\n1. 프로젝트 설정\n2. 개발 환경 구축\n\nSPA 개발을 위한 **React** 사용법을 소개합니다.\n\n초기 설정부터 배포까지 `단계별` 설명.\n\n```javascript\nimport React from 'react';\n\nconsole.log(\"Welcome to SPA world!\");\n```\n\n쉽고 재밌게 따라와 보세요!",
+    "createdAt": "2024-03-15",
+    "profileImagePath": "images/박프론트.png",
+    "categories": "Conference"
+  },
+  {
+    "_id": {
+      "$oid": "65f0f92aefbb68ad8effb492"
     },
-    {
-        "title": "Django로 API 서버 구축하기",
-        "tags": [
-            "Django",
-            "API",
-            "Backend"
-        ],
-        "outline": "Django를 활용하여 API 서버를 구축하는 방법을 소개합니다. 기본 설정부터 첫 API 개발까지 단계별로 설명합니다.",
-        "author": "이백엔드",
-        "content": "# 서버 개발 시작\n\n## 2024-03-10 09:20 작성\n\n### 기본 설정과 첫 API 개발\n\n이미지 없이 텍스트 중심으로 설명\n\n1. 환경 설정\n2. 첫 API 구현\n\nDjango를 활용한 API 서버 구축을 위한 가이드입니다.\n\n효율적인 `서버 구축` 방법과 팁을 공유합니다.\n\n```python\nimport django\n\nprint(\"API server start!\")\n```\n\nAPI 서버 구축이 어렵지 않아요. 함께 해볼까요?",
-        "createdAt": "2024-03-10",
-        "catogory": "Backend Development TEAM",
-        "profileImagePath": "images/이백엔드.png"
+    "title": "Django로 API 서버 구축하기",
+    "tags": [
+      "Django",
+      "API",
+      "Backend"
+    ],
+    "outline": "Django를 활용하여 API 서버를 구축하는 방법을 소개합니다. 기본 설정부터 첫 API 개발까지 단계별로 설명합니다.",
+    "author": "이백엔드",
+    "content": "# 서버 개발 시작\n\n## 2024-03-10 09:20 작성\n\n### 기본 설정과 첫 API 개발\n\n이미지 없이 텍스트 중심으로 설명\n\n1. 환경 설정\n2. 첫 API 구현\n\nDjango를 활용한 API 서버 구축을 위한 가이드입니다.\n\n효율적인 `서버 구축` 방법과 팁을 공유합니다.\n\n```python\nimport django\n\nprint(\"API server start!\")\n```\n\nAPI 서버 구축이 어렵지 않아요. 함께 해볼까요?",
+    "createdAt": "2024-03-10",
+    "profileImagePath": "images/이백엔드.png",
+    "categories": "ALL"
+  },
+  {
+    "_id": {
+      "$oid": "65f0f92aefbb68ad8effb493"
     },
-    {
-        "title": "데이터 시각화와 분석을 위한 Python 활용",
-        "tags": [
-            "Python",
-            "Data Visualization",
-            "Data Analysis"
-        ],
-        "outline": "Tableau, Power BI 등의 시각화 툴을 사용하지 않고 Python을 활용하여 데이터 시각화와 분석을 하는 방법을 소개합니다.",
-        "author": "정데이터",
-        "content": "# 데이터 분석 프로젝트\n\n## 2024-03-05 14:45 작성\n\n### Python을 이용한 데이터 시각화 기초\n\n이미지 첨부 계획 없음\n\n1. 데이터 수집\n2. 데이터 처리 및 시각화\n\n데이터 분석과 시각화를 위한 **Python** 라이브러리 사용법을 소개합니다.\n\n쉽게 따라할 수 있는 `데이터 시각화` 기초부터 시작해요.\n\n```python\nimport matplotlib.pyplot as plt\n\nplt.plot([1, 2, 3], [4, 5, 6])\nplt.show()\n```\n\n데이터를 시각화하여 보다 직관적으로 이해해보세요!",
-        "createdAt": "2024-03-05",
-        "catogory": "Data Science TEAM",
-        "profileImagePath": "images/정데이터.png"
-    }
-]
+    "title": "데이터 시각화와 분석을 위한 Python 활용",
+    "tags": [
+      "Python",
+      "Data Visualization",
+      "Data Analysis"
+    ],
+    "outline": "Tableau, Power BI 등의 시각화 툴을 사용하지 않고 Python을 활용하여 데이터 시각화와 분석을 하는 방법을 소개합니다.",
+    "author": "정데이터",
+    "content": "# 데이터 분석 프로젝트\n\n## 2024-03-05 14:45 작성\n\n### Python을 이용한 데이터 시각화 기초\n\n이미지 첨부 계획 없음\n\n1. 데이터 수집\n2. 데이터 처리 및 시각화\n\n데이터 분석과 시각화를 위한 **Python** 라이브러리 사용법을 소개합니다.\n\n쉽게 따라할 수 있는 `데이터 시각화` 기초부터 시작해요.\n\n```python\nimport matplotlib.pyplot as plt\n\nplt.plot([1, 2, 3], [4, 5, 6])\nplt.show()\n```\n\n데이터를 시각화하여 보다 직관적으로 이해해보세요!",
+    "createdAt": "2024-03-05",
+    "profileImagePath": "images/정데이터.png",
+    "categories": "Data Analytics TEAM"
+  }]
