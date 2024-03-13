@@ -1,7 +1,5 @@
-[{
-    "_id": {
-      "$oid": "65f0f92aefbb68ad8effb48e"
-    },
+[
+    {
     "title": "MongoDB로 블로그 만들기",
     "tags": [
       "MongoDB",
@@ -16,9 +14,6 @@
     "categories": "Data Science TEAM"
   },
   {
-    "_id": {
-      "$oid": "65f0f92aefbb68ad8effb48f"
-    },
     "title": "SQL 3일만에 합격하기",
     "tags": [
       "SQL",
@@ -32,9 +27,6 @@
     "categories": "Data Analytics TEAM"
   },
   {
-    "_id": {
-      "$oid": "65f0f92aefbb68ad8effb490"
-    },
     "title": "AWS 공부",
     "tags": [
       "AWS",
@@ -48,9 +40,6 @@
     "categories": "Data Engineering TEAM"
   },
   {
-    "_id": {
-      "$oid": "65f0f92aefbb68ad8effb491"
-    },
     "title": "React로 SPA 애플리케이션 만들기",
     "tags": [
       "React",
@@ -65,9 +54,6 @@
     "categories": "Conference"
   },
   {
-    "_id": {
-      "$oid": "65f0f92aefbb68ad8effb492"
-    },
     "title": "Django로 API 서버 구축하기",
     "tags": [
       "Django",
@@ -82,9 +68,6 @@
     "categories": "ALL"
   },
   {
-    "_id": {
-      "$oid": "65f0f92aefbb68ad8effb493"
-    },
     "title": "데이터 시각화와 분석을 위한 Python 활용",
     "tags": [
       "Python",
