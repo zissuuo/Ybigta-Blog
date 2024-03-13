@@ -67,6 +67,7 @@ class Post(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     title: str
     tags: List[str]
+    outline: str
     author: str
     profileImagePath: str
     content: str
