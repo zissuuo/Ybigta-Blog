@@ -1,13 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import Any, List, Optional
 from bson.objectid import ObjectId
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Any
-from bson import ObjectId
 from pydantic_core import core_schema
-from typing import Optional
 
 
 app = FastAPI()
@@ -79,30 +76,8 @@ class Post(BaseModel):
         populate_by_name = True
         json_encoders = {ObjectId: lambda v: str(v)}
 
-# 특정 포스트 조회
-@app.get("/posts/{post_id}", response_model=Post)
-async def read_post(post_id: str):
-    if not ObjectId.is_valid(post_id):
-        raise HTTPException(status_code=400, detail="Invalid post ID format")
-    post = await MongoDB.db.find_one({"_id": ObjectId(post_id)})
-    if post is None:
-        raise HTTPException(status_code=404, detail="Post not found")
-    
-    # Pydantic 모델 인스턴스를 alias를 사용하여 반환
-    return Post(**post).model_dump(by_alias=True)   
 
-# # 태그 필터링 조회
-# @app.get("/posts/", response_model=List[Post])
-# async def read_posts(tag: Optional[str] = None):
-#     if tag:
-#         # 태그가 제공된 경우, 해당 태그를 포함하는 포스트만 조회
-#         posts = await MongoDB.db.find({"tags": tag}).to_list(100)
-#     else:
-#         # 태그가 제공되지 않은 경우, 모든 포스트 조회
-#         posts = await MongoDB.db.find().to_list(100)
-#     return posts
-
-
+# 블로그 기본 페이지
 @app.get("/posts/", response_model=List[Post])
 async def read_posts(tag: Optional[str] = None, category: Optional[str] = None):
     query = {}
@@ -114,3 +89,15 @@ async def read_posts(tag: Optional[str] = None, category: Optional[str] = None):
     # query가 비어있으면 모든 문서를 조회하고, tag나 category가 지정되어 있으면 해당 조건에 맞는 문서만 조회
     posts = await MongoDB.db.find(query).to_list(100)
     return posts
+
+# 특정 포스트 조회
+@app.get("/posts/{post_id}", response_model=Post)
+async def read_post(post_id: str):
+    if not ObjectId.is_valid(post_id):
+        raise HTTPException(status_code=400, detail="Invalid post ID format")
+    post = await MongoDB.db.find_one({"_id": ObjectId(post_id)})
+    if post is None:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Pydantic 모델 인스턴스를 alias를 사용하여 반환
+    return Post(**post).model_dump(by_alias=True)   
