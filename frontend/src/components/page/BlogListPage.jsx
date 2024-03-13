@@ -72,8 +72,9 @@ const BlogListPage = () => {
                     <h2 onClick={() => handlePostClick(post._id)} style={{ cursor: 'pointer' }}>
                         {post.title}
                     </h2>
+                    <h4>{post.outline}</h4>
                     {post.tags.map((tag, tagIndex) => (
-                        <span key={tagIndex} style={{marginRight: "10px"}} onClick={(event) => handleTagClick(tag, event)}>
+                        <span key={tagIndex} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }} onClick={(event) => handleTagClick(tag, event)}>
                             #{tag}
                         </span>
                     ))}
