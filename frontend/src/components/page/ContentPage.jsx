@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -12,6 +12,19 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 40px;
+`;
+
+const Tags = styled.span`
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 8px;
+    padding-left: 8px;
+    background-color: #EBEBEB;
+    text-align: center;
+    font-size: 13px;
+    justify-content: center;
+    color: #666666;
+    border-radius: 5px;
 `;
 
 const CodeBlock = ({node, inline, className, children, ...props}) => {
@@ -39,6 +52,7 @@ const ContentPage = () => {
     const { postId } = useParams(); // URL에서 postId를 추출
     console.log(postId);
     const [post, setPost] = useState(null);
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         fetch(`http://localhost:8000/posts/${postId}`) // postId를 사용하여 해당 글 정보를 불러옵니다.
@@ -47,15 +61,26 @@ const ContentPage = () => {
         .catch(error => console.log(error));
     }, [postId]);
 
+    // 태그 단일선택 처리 (공통사용)
+    const handleTagClick = (tag, event) => {
+      event.stopPropagation();
+      navigate(`/?tags=${tag}`);
+    };
+
     if (!post) return <div>Loading...</div>;
 
     return (
         <Wrapper>
             <div>
                 <h2>{post.title}</h2>
-                {post.tags && post.tags.map((tag, index) => (
-                    <p key={index}>#{tag}</p>
-                ))}
+
+                {/* 태그 및 단일 필터링 */}
+                    {post.tags.map((tag, tagIndex) => (
+                        <Tags key={tagIndex} onClick={(event) => handleTagClick(tag, event)} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }}>
+                        #{tag}
+                        </Tags>
+                    ))}
+
                 <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{ code: CodeBlock, img: Image }}
