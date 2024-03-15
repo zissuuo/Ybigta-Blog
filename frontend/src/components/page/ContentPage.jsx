@@ -13,6 +13,19 @@ const Wrapper = styled.div`
   padding: 40px;
 `;
 
+const Tags = styled.span`
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background-color: #ebebeb;
+  text-align: center;
+  font-size: 13px;
+  justify-content: center;
+  color: #666666;
+  border-radius: 5px;
+`;
+
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
   return !inline && match ? (
@@ -62,6 +75,12 @@ const ContentPage = () => {
       .catch((error) => console.log(error));
   }, [postId]);
 
+  // 태그 단일선택 처리 (공통사용)
+  const handleTagClick = (tag, event) => {
+    event.stopPropagation();
+    navigate(`/?tags=${tag}`);
+  };
+
   if (!post || !posts.length) return <div>Loading...</div>;
 
   // 현재 포스트의 인덱스를 찾음
@@ -80,7 +99,17 @@ const ContentPage = () => {
     <Wrapper>
       <div>
         <h2>{post.title}</h2>
-        {post.tags && post.tags.map((tag, index) => <p key={index}>#{tag}</p>)}
+        {/* 태그 및 단일 필터링 */}
+        {post.tags.map((tag, tagIndex) => (
+          <Tags
+            key={tagIndex}
+            onClick={(event) => handleTagClick(tag, event)}
+            style={{ marginRight: "10px", cursor: "pointer", gap: "10px" }}
+          >
+            #{tag}
+          </Tags>
+        ))}
+
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{ code: CodeBlock, img: Image }}
@@ -89,6 +118,8 @@ const ContentPage = () => {
         </ReactMarkdown>
       </div>
 
+      {/* button to get back to BlogListPage */}
+      <Box onClick={() => navigate("/")}>목록으로</Box>
       {prevPost && (
         <Box onClick={() => goToPost(prevPost._id)}>
           이전글: {prevPost.title}
@@ -103,12 +134,18 @@ const ContentPage = () => {
   );
 };
 
-const Box = ({ children }) => (
-  <div
-    style={{ border: "1px solid black", padding: "20px", marginTop: "20px" }}
+const Box = ({ children, onClick }) => (
+  <button
+    style={{
+      border: "1px solid black",
+      padding: "20px",
+      marginTop: "20px",
+      cursor: "pointer",
+    }}
+    onClick={onClick}
   >
     {children}
-  </div>
+  </button>
 );
 
 export default ContentPage;
