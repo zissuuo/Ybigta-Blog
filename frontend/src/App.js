@@ -21,8 +21,20 @@ const AllGlobalStyle = createGlobalStyle`
     font-family: 'Pretendard-ExtraBold';
     }
   @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('/font/Pretendard-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Pretendard-Light';
+    src: url('/font/Pretendard-Light.ttf') format('truetype');
+  }
+  @font-face {
     font-family: 'Pretendard-SemiBold';
-    src: url('/font/Pretendard-SemiBold.ttf') format('truetype');;
+    src: url('/font/Pretendard-SemiBold.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Pretendard-Medium';
+    src: url('/font/Pretendard-Medium.ttf') format('truetype');
   }
  `;
 

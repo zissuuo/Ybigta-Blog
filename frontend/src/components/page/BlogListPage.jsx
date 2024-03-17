@@ -6,10 +6,48 @@ import styled, { createGlobalStyle } from 'styled-components';
 import HeaderComponent from '../ui/HeaderComponent';
 
 const Wrapper = styled.div`
-    padding:40px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 `;
+
+const ImgTagBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 40px;
+`;
+
+const BackgroundImg = styled.div`
+    width: 100%;
+    height: 323px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url('${process.env.PUBLIC_URL}/background.JPG');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    color: white;
+    font-family: 'Pretendard-ExtraBold';
+    font-size: 60px;
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+`;
+
+
+const PostCategoryContainer = styled.div`
+    display: flex;
+    padding-top: 30px;
+    padding-left: 90px;
+    padding-right: 90px;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 50px;
+`;
+
 
 const TagContainer = styled.div`
     display: flex;
@@ -17,32 +55,84 @@ const TagContainer = styled.div`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    //width: 600px;
-    gap: 7px;
+    width: 600px;
+    gap: 15px 7px;
 `;
 
 const CategoryContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    //width: 600px;
-    gap: 7px;
+    width: 300px;
+    flex-direction: column;
+    gap: 9px;
 `;
 
 const Tags = styled.span`
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-right: 8px;
-    padding-left: 8px;
-    background-color: #EBEBEB;
+    padding-left: 12px;
+    padding-right: 12px;
+    display: flex;
+    height: 30px;
+    cursor: pointer;
+    background-color: ${props => props.isSelected ? '#96B8D2' : '#EBEBEB'}; /* 조건부 색상 적용 */
+    color: ${props => props.isSelected ? '#ffffff' : '#666666'};
     text-align: center;
+    font-family: 'Pretendard-SemiBold';
     font-size: 13px;
     justify-content: center;
-    color: #666666;
-    border-radius: 5px;
+    align-items: center; /* 이 줄을 추가하세요 */
+    border-radius: 30px;
 `;
+
+const SearchInput = styled.input`
+    //width: 300px;
+    height: 30px;
+    border-radius: 30px;
+    border: none;
+    box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+`;
+
+const PostWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const PostContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-width: 750px;
+    gap: 16px;
+    //padding: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #d4d4d4;
+`;
+
+const InnerTagContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+const PostTitle = styled.span`
+    font-family: 'Pretendard-ExtraBold';
+    font-size: 23px;
+    cursor: pointer;
+    transition: color 0.1s ease;
+    &:hover {
+        color: #666666;
+    }
+`;
+
+const Category = styled.span`
+    font-family: 'Pretendard-Medium';
+    cursor: pointer;
+    color: ${props => props.isSelected ? '#666666' : '#252a2f'};
+    transition: color 0.1s ease;
+    &:hover {
+        color: #666666;
+    }
+`;
+
 
   
 const BlogListPage = () => {
@@ -168,64 +258,87 @@ const BlogListPage = () => {
     return (
         <Wrapper>
             <HeaderComponent></HeaderComponent>
-            <h1 onClick={resetFilters} style={{cursor: 'pointer'}}>
-            블로그 메인/리스트 페이지
-            </h1>
-
-            <input
-                type="text"
-                value={searchQuery}
-                onChange={handleSearchInputChange}
-                placeholder="Search..."
-            />
         
+
+        <ImgTagBox>
+            <BackgroundImg>
+                <span>
+                    Shape the Future of Data
+                </span>
+                <span>
+                    with a Community of Enthusiasts
+                </span>
+            </BackgroundImg>
+
             {/* 태그 렌더링 - 다중 선택 */}
             <TagContainer>
-            {uniqueTags.map((tag, tagIndex) => (
-                <Tags key={tagIndex} onClick={() => handleTagChange(tag)} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }}>
-                #{tag}{selectedTags.includes(tag) ? ' (Selected)' : ''}
-                </Tags>     
-            ))}
-            </TagContainer>
-        
-            {/* 카테고리 버튼 렌더링 */}
-            <CategoryContainer>
-                {uniqueCategories.map((category, index) => (
-                <Tags key={index} onClick={() => handleCategoryChange(category)} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }}>
-                    {selectedCategory === category ? `${category} (Selected)` : category}
-                </Tags>
+                {uniqueTags.map((tag, tagIndex) => (
+                    <Tags key={tagIndex} onClick={() => handleTagChange(tag)} isSelected={selectedTags.includes(tag)}>
+                        {tag}
+                    </Tags>
+   
                 ))}
-            </CategoryContainer>
-        
+            </TagContainer>
+        </ImgTagBox>
+
+
             {/* 포스트 목록 렌더링 및 각종 click 이동 이벤트 */}
-            <div>
-            {filteredPosts.map((post, index) => (
-                <div key={index}>
-                    {/* 제목 클릭 시 포스트로 이동 */}
-                    <h2 onClick={() => handlePostClick(post._id)} style={{cursor: 'pointer'}}> 
-                    {post.title} 
-                    </h2>
+            <PostCategoryContainer>
+                <PostWrapper>
+                {filteredPosts.map((post, index) => (
+                    <PostContainer key={index}>
+                        {/* 제목 클릭 시 포스트로 이동 */}
+                        <PostTitle onClick={() => handlePostClick(post._id)}
+                                style={{cursor: 'pointer',
+                                        fontFamily: 'Pretendard-ExtraBold',
+                                        fontSize: '23px'}}> 
+                            {post.title} 
+                        </PostTitle>
 
-                    {/* 작성자, 프사, 날짜, 아웃라인 */}
-                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px', fontWeight: 'bold', color: 'gray' }}>
-                        <span>{post.author}</span>
-                        <img src={post.profileImagePath} alt="Author's profile" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
-                        <span style={{ margin: '0 10px', fontWeight: 'bold', color: 'lightgray' }}>
-                            {new Date(post.createdAt).toLocaleDateString()}
+                        {/* 작성자, 프사, 날짜, 아웃라인 */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
+                            <img src={post.profileImagePath} alt="Author's profile" style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+                            <span style={{ fontFamily: 'Pretendard-Medium', color: '#252a2f', marginLeft: '20px'}}>
+                                {post.author}
+                            </span>
+                            <span style={{ fontFamily: 'Pretendard-Medium', color: '#666666', marginLeft: '20px' }}>
+                                {new Date(post.createdAt).toLocaleDateString()}
+                            </span>
+                        </div>
+                        <span style={{ fontFamily: 'Pretendard-Medium', color: '#666666'}}>
+                            {post.outline}
                         </span>
-                    </div>
-                    
-                    <h4>{post.outline}</h4>
 
-                    {/* 태그 및 단일 필터링 */}
-                    {post.tags.map((tag, tagIndex) => (
-                        <Tags key={tagIndex} onClick={(event) => handleTagClick(tag, event)} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }}>
-                        #{tag}
-                        </Tags>
-                    ))}
-                </div>
-            ))}
-            </div>
+                        {/* 태그 및 단일 필터링 */}
+                        <InnerTagContainer>
+                            {post.tags.map((tag, tagIndex) => (
+                                <Tags key={tagIndex} onClick={(event) => handleTagClick(tag, event)} style={{marginRight: "10px", cursor: 'pointer', gap: "10px" }}>
+                                    {tag}
+                                </Tags>
+                            ))}
+                        </InnerTagContainer>
+                    </PostContainer>
+                ))}
+                </PostWrapper>
+
+                {/* 카테고리 버튼 검색 기능 렌더링 */}
+                <CategoryContainer>
+                    <SearchInput
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
+                    placeholder="Search..."
+                    />
+                    <span style={{cursor: 'pointer', fontFamily: 'Pretendard-ExtraBold', fontSize: '23px'}}>
+                        Category
+                    </span>
+                        {uniqueCategories.map((category, index) => (
+                            <Category key={index} onClick={() => handleCategoryChange(category)} isSelected={selectedCategory === category}>
+                                - {category}
+                            </Category>
+                        ))}
+                </CategoryContainer>
+            </PostCategoryContainer>
         
         </Wrapper>
         );
