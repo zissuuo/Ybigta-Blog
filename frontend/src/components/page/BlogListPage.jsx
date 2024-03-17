@@ -46,8 +46,8 @@ const PostCategoryContainer = styled.div`
     flex-direction: row;
     align-items: flex-start;
     gap: 50px;
+    justify-content: center; /* 추가: 자식 요소들이 중앙에 위치하도록 함 */
 `;
-
 
 const TagContainer = styled.div`
     display: flex;
@@ -61,7 +61,8 @@ const TagContainer = styled.div`
 
 const CategoryContainer = styled.div`
     display: flex;
-    width: 300px;
+    min-width: 300px; /* 최소 너비 설정 */
+    max-width: 300px; /* 최대 너비 설정 */
     flex-direction: column;
     gap: 9px;
 `;
@@ -72,8 +73,8 @@ const Tags = styled.span`
     display: flex;
     height: 30px;
     cursor: pointer;
-    background-color: ${props => props.isSelected ? '#96B8D2' : '#EBEBEB'}; /* 조건부 색상 적용 */
-    color: ${props => props.isSelected ? '#ffffff' : '#666666'};
+    background-color: #EBEBEB;
+    color: ${props => props.isSelected ? '#3b82f6' : '#666666'}; /* 조건부 색상 적용 */
     text-align: center;
     font-family: 'Pretendard-SemiBold';
     font-size: 13px;
@@ -96,6 +97,11 @@ const SearchInput = styled.input`
 const PostWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    min-width: 750px; /* 최소 너비 설정 */
+    max-width: 750px; /* 최대 너비 설정 */
+    gap: 16px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
 `;
 
 const PostContainer = styled.div`
@@ -256,10 +262,9 @@ const BlogListPage = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
+    <div>
+        <HeaderComponent />
         <Wrapper>
-            <HeaderComponent></HeaderComponent>
-        
-
         <ImgTagBox>
             <BackgroundImg>
                 <span>
@@ -341,6 +346,7 @@ const BlogListPage = () => {
             </PostCategoryContainer>
         
         </Wrapper>
+        </div>
         );
       
 };
