@@ -17,12 +17,12 @@ const ImgTagBox = styled.div`
     justify-content: center;
     align-items: center;
     gap: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 `;
 
 const BackgroundImg = styled.div`
     width: 100%;
-    height: 323px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -81,17 +81,36 @@ const Tags = styled.span`
     justify-content: center;
     align-items: center; /* 이 줄을 추가하세요 */
     border-radius: 30px;
+    transition: color 0.1s ease;
+    &:hover {
+        color: #3b82f6;
+    }
+`;
+
+const SearchForm = styled.form`
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
 `;
 
 const SearchInput = styled.input`
-    //width: 300px;
     height: 30px;
-    border-radius: 30px;
+    padding-left: 10px;
+    border-radius: 15px;
     border: none;
     box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+    font-family: 'Pretendard-Medium';
+`;
+
+const SearchButton = styled.button`
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: none;
+  background-color: #EBEBEB;
+  color: #666666;
+  cursor: pointer;
+  margin-left: 10px;
+  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
 `;
 
 const PostWrapper = styled.div`
@@ -109,8 +128,7 @@ const PostContainer = styled.div`
     flex-direction: column;
     min-width: 750px;
     gap: 16px;
-    //padding: 10px;
-    padding-bottom: 20px;
+    padding-bottom: 40px;
     margin-bottom: 20px;
     border-bottom: 1px solid #d4d4d4;
 `;
@@ -132,13 +150,12 @@ const PostTitle = styled.span`
 const Category = styled.span`
     font-family: 'Pretendard-Medium';
     cursor: pointer;
-    color: ${props => props.isSelected ? '#666666' : '#252a2f'};
+    color: ${props => props.isSelected ? '#3b82f6' : '#252a2f'};
     transition: color 0.1s ease;
     &:hover {
-        color: #666666;
+        color: #3b82f6;
     }
 `;
-
 
   
 const BlogListPage = () => {
@@ -165,9 +182,15 @@ const BlogListPage = () => {
         return posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     };
 
+    // 검색 실행 함수
+    const executeSearch = (e) => {
+        e.preventDefault(); // 폼 기본 제출 이벤트 방지
+        setSearchParams({ ...Object.fromEntries(searchParams.entries()), search: searchQuery });
+    };
+
     // 검색어 입력 처리 저장
     const handleSearchInputChange = (event) => {
-        setSearchQuery(event.target.value); // 입력된 검색어를 상태로 저장
+        setSearchQuery(event.target.value); // 입력된 검색어를 로컬 상태로 저장
     };
 
 
@@ -198,6 +221,7 @@ const BlogListPage = () => {
         // URL에서 tags와 cat 쿼리 파라미터 값 읽어오기
         const tagsFromURL = searchParams.get('tags');
         const categoryFromURL = searchParams.get('cat');
+        const searchQueryFromURL = searchParams.get('search');
     
         // 쿼리 파라미터가 없는 경우 빈 배열 또는 빈 문자열로 초기화
         const tagsArray = tagsFromURL ? tagsFromURL.split('&') : [];
@@ -206,6 +230,7 @@ const BlogListPage = () => {
         // 컴포넌트 상태를 URL의 쿼리 파라미터에 맞게 업데이트
         setSelectedTags(tagsArray);
         setSelectedCategory(category);
+        setSearchQuery(searchQueryFromURL || '');
     }, [searchParams]); // searchParams 변화 감지
 
 
@@ -246,19 +271,17 @@ const BlogListPage = () => {
     const filteredPosts = posts.filter(post => {
         const hasSelectedTags = selectedTags.length === 0 || selectedTags.every(tag => post.tags.includes(tag));
         const hasSelectedCategory = !selectedCategory || post.categories.includes(selectedCategory);
-        const matchesSearchQuery = 
-            post.title.toLowerCase().includes(searchQuery.toLowerCase()) || // 제목에 검색어가 포함되는지 확인
-            post.content.toLowerCase().includes(searchQuery.toLowerCase()); // 내용에 검색어가 포함되는지 확인
+        const matchesSearchQuery = searchParams.get('search') ? 
+            post.title.toLowerCase().includes(searchParams.get('search').toLowerCase()) || 
+            post.content.toLowerCase().includes(searchParams.get('search').toLowerCase()) : true;
         return hasSelectedTags && hasSelectedCategory && matchesSearchQuery;
     });
 
-    // const allTags = posts.reduce((acc, post) => [...acc, ...post.tags], []);
-    // const uniqueTags = [...new Set(allTags)];
+    // 태그, 카테고리 중복 제거 및 오름차순 정렬
+    const uniqueTags = [...new Set(posts.flatMap(post => post.tags))].sort();
+    const uniqueCategories = [...new Set(posts.map(post => post.categories))].sort();
     
-    const uniqueTags = [...new Set(posts.flatMap(post => post.tags))];
-    const uniqueCategories = [...new Set(posts.map(post => post.categories))];
-    
-    if (loading) return <div>Loading...</div>
+    //if (loading) return <div>Loading...</div>
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -293,10 +316,7 @@ const BlogListPage = () => {
                 {filteredPosts.map((post, index) => (
                     <PostContainer key={index}>
                         {/* 제목 클릭 시 포스트로 이동 */}
-                        <PostTitle onClick={() => handlePostClick(post._id)}
-                                style={{cursor: 'pointer',
-                                        fontFamily: 'Pretendard-ExtraBold',
-                                        fontSize: '23px'}}> 
+                        <PostTitle onClick={() => handlePostClick(post._id)}> 
                             {post.title} 
                         </PostTitle>
 
@@ -324,27 +344,34 @@ const BlogListPage = () => {
                         </InnerTagContainer>
                     </PostContainer>
                 ))}
+                {filteredPosts.length === 0 &&
+                    <div style={{display:'flex', flexDirection: 'column', gap:'10px'}}>
+                        <span style={{fontFamily: 'Pretendard-SemiBold', color: '#666666', fontSize: '21px'}}>검색 결과에 해당하는 내용이 없습니다 😅</span>
+                        <span style={{fontFamily: 'Pretendard-Medium', color: '#666666'}}>다른 태그와 카테고리로 검색해보세요</span>
+                    </div>}
                 </PostWrapper>
 
                 {/* 카테고리 버튼 검색 기능 렌더링 */}
                 <CategoryContainer>
-                    <SearchInput
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleSearchInputChange}
-                    placeholder="Search..."
-                    />
+                    <SearchForm onSubmit={executeSearch}>
+                        <SearchInput
+                            type="text"
+                            value={searchQuery}
+                            onChange={handleSearchInputChange} // 변경된 핸들러 사용
+                            placeholder="Search..."
+                        />
+                        <SearchButton type="submit">🔎</SearchButton>
+                    </SearchForm>
                     <span style={{cursor: 'pointer', fontFamily: 'Pretendard-ExtraBold', fontSize: '23px'}}>
                         Category
                     </span>
                         {uniqueCategories.map((category, index) => (
                             <Category key={index} onClick={() => handleCategoryChange(category)} isSelected={selectedCategory === category}>
-                                - {category}
+                                {category}
                             </Category>
                         ))}
                 </CategoryContainer>
             </PostCategoryContainer>
-        
         </Wrapper>
         </div>
         );
