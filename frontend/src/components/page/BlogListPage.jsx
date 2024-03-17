@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
+import HeaderComponent from '../ui/HeaderComponent';
 
 const Wrapper = styled.div`
+    padding:40px;
     display: flex;
     flex-direction: column;
-    padding: 40px;
 `;
 
 const TagContainer = styled.div`
@@ -51,6 +52,7 @@ const BlogListPage = () => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
+    const [searchQuery, setSearchQuery] = useState('');
 
     // 페이지 이동
     const navigate = useNavigate(); 
@@ -67,7 +69,10 @@ const BlogListPage = () => {
         return posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     };
 
-    // 페이지네이션
+    // 검색어 입력 처리 저장
+    const handleSearchInputChange = (event) => {
+        setSearchQuery(event.target.value); // 입력된 검색어를 상태로 저장
+    };
 
 
     // 초기 포스트 페이지 로딩
@@ -145,7 +150,10 @@ const BlogListPage = () => {
     const filteredPosts = posts.filter(post => {
         const hasSelectedTags = selectedTags.length === 0 || selectedTags.every(tag => post.tags.includes(tag));
         const hasSelectedCategory = !selectedCategory || post.categories.includes(selectedCategory);
-        return hasSelectedTags && hasSelectedCategory;
+        const matchesSearchQuery = 
+            post.title.toLowerCase().includes(searchQuery.toLowerCase()) || // 제목에 검색어가 포함되는지 확인
+            post.content.toLowerCase().includes(searchQuery.toLowerCase()); // 내용에 검색어가 포함되는지 확인
+        return hasSelectedTags && hasSelectedCategory && matchesSearchQuery;
     });
 
     // const allTags = posts.reduce((acc, post) => [...acc, ...post.tags], []);
@@ -154,14 +162,22 @@ const BlogListPage = () => {
     const uniqueTags = [...new Set(posts.flatMap(post => post.tags))];
     const uniqueCategories = [...new Set(posts.map(post => post.categories))];
     
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div>Loading...</div>
     if (error) return <div>Error: {error}</div>;
 
     return (
         <Wrapper>
+            <HeaderComponent></HeaderComponent>
             <h1 onClick={resetFilters} style={{cursor: 'pointer'}}>
             블로그 메인/리스트 페이지
             </h1>
+
+            <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                placeholder="Search..."
+            />
         
             {/* 태그 렌더링 - 다중 선택 */}
             <TagContainer>
