@@ -91,12 +91,15 @@ const SearchForm = styled.form`
     display: flex;
     flex-direction: row;
     margin-bottom: 20px;
+    border: none;
 `;
 
 const SearchInput = styled.input`
     height: 30px;
     padding-left: 10px;
     border-radius: 15px;
+    color: #666666;
+    outline: none;
     border: none;
     box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
     font-family: 'Pretendard-Medium';
@@ -358,7 +361,7 @@ const BlogListPage = () => {
                             type="text"
                             value={searchQuery}
                             onChange={handleSearchInputChange} // 변경된 핸들러 사용
-                            placeholder="Search..."
+                            placeholder="검색"
                         />
                         <SearchButton type="submit">🔎</SearchButton>
                     </SearchForm>
