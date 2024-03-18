@@ -26,6 +26,89 @@ const Tags = styled.span`
   border-radius: 5px;
 `;
 
+const ListButton = styled.button`
+  border: 1px solid #cccccc;
+  padding: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  color: #666666;
+  background-color: white;
+  width: 190px;
+  height: 40px;
+  margin: 0 auto;
+  font-weight: bold;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MoveButton = styled.button`
+  position: relative;
+  border: 1px solid #cccccc;
+  padding: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  color: black;
+  background-color: white;
+  width: 320px;
+  height: 120px;
+  font-weight: bold;
+  font-size: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: ${({ alignLeft }) => (alignLeft ? "flex-start" : "flex-end")};
+  justify-content: center;
+  margin-left: ${({ alignLeft }) => (alignLeft ? "80px" : "auto")};
+  margin-right: ${({ alignLeft }) => (alignLeft ? "auto" : "80px")};
+`;
+
+const ButtonContainer = styled.div`
+  // 버튼 두 개를 감싸는 컨테이너
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  width: 100%;
+`;
+
+const SubTitle = styled.span`
+  font-size: 16px;
+  color: #666666;
+  text-align: ${({ alignLeft }) => (alignLeft ? "left" : "right")};
+  margin-bottom: 10px;
+  position: absolute;
+  top: 17px;
+`;
+
+const PostTitle = styled.span`
+  font-size: 20px;
+  text-align: left;
+  position: absolute;
+  top: 50px;
+  left: 18px;
+  width: 290px;
+`;
+
+const Body = styled.span`
+  font-size: 17px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+`;
+
+const Divider = styled.hr`
+  border: none;
+  height: 1px;
+  background-color: #ced4da;
+  margin-top: 40px; // 구분선 위의 간격을 조정하세요.
+  margin-bottom: 40px; // 구분선 아래의 간격을 조정하세요.
+  width: 90%;
+`;
+
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
   return !inline && match ? (
@@ -58,7 +141,6 @@ const Image = ({ node, ...props }) => (
 
 const ContentPage = () => {
   const { postId } = useParams(); // URL에서 postId를 추출
-  console.log(postId);
   const [post, setPost] = useState(null);
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
@@ -98,54 +180,69 @@ const ContentPage = () => {
   return (
     <Wrapper>
       <div>
-        <h2>{post.title}</h2>
+        <h2 style={{ textAlign: "left" }}>{post.title}</h2>
         {/* 태그 및 단일 필터링 */}
         {post.tags.map((tag, tagIndex) => (
-          <Tags
-            key={tagIndex}
-            onClick={(event) => handleTagClick(tag, event)}
-            style={{ marginRight: "10px", cursor: "pointer", gap: "10px" }}
-          >
+          <Tags key={tagIndex} onClick={(event) => handleTagClick(tag, event)}>
             #{tag}
           </Tags>
         ))}
 
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={{ code: CodeBlock, img: Image }}
-        >
-          {post.content}
-        </ReactMarkdown>
+        <Body>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{ code: CodeBlock, img: Image }}
+          >
+            {post.content}
+          </ReactMarkdown>
+        </Body>
       </div>
 
+      <Divider />
+
       {/* button to get back to BlogListPage */}
-      <Box onClick={() => navigate("/")}>목록으로</Box>
-      {prevPost && (
-        <Box onClick={() => goToPost(prevPost._id)}>
-          이전글: {prevPost.title}
-        </Box>
-      )}
-      {nextPost && (
-        <Box onClick={() => goToPost(nextPost._id)}>
-          다음글: {nextPost.title}
-        </Box>
-      )}
+      <ListButton onClick={() => navigate("/")}>목록으로 돌아가기</ListButton>
+
+      <ButtonContainer>
+        {/* 이전 글 버튼만 존재할 때 */}
+        {prevPost && !nextPost && (
+          <>
+            <MoveButton alignLeft onClick={() => goToPost(prevPost._id)}>
+              <SubTitle alignLeft>이전 글</SubTitle>
+              <PostTitle>{prevPost.title}</PostTitle>
+            </MoveButton>
+            <div></div> {/* 다음 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
+          </>
+        )}
+
+        {/* 다음 글 버튼만 존재할 때 */}
+        {!prevPost && nextPost && (
+          <>
+            <div></div> {/* 이전 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
+            <MoveButton alignRight onClick={() => goToPost(nextPost._id)}>
+              <SubTitle alignRight>다음 글</SubTitle>
+              <PostTitle>{nextPost.title}</PostTitle>
+            </MoveButton>
+          </>
+        )}
+
+        {/* 이전 글과 다음 글 버튼 모두 존재할 때 */}
+        {prevPost && nextPost && (
+          <>
+            <MoveButton alignLeft onClick={() => goToPost(prevPost._id)}>
+              <SubTitle alignLeft>이전 글</SubTitle>
+              <PostTitle>{prevPost.title}</PostTitle>
+            </MoveButton>
+            <div></div> {/* 다음 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
+            <MoveButton alignRight onClick={() => goToPost(nextPost._id)}>
+              <SubTitle alignRight>다음 글</SubTitle>
+              <PostTitle>{nextPost.title}</PostTitle>
+            </MoveButton>
+          </>
+        )}
+      </ButtonContainer>
     </Wrapper>
   );
 };
-
-const Box = ({ children, onClick }) => (
-  <button
-    style={{
-      border: "1px solid black",
-      padding: "20px",
-      marginTop: "20px",
-      cursor: "pointer",
-    }}
-    onClick={onClick}
-  >
-    {children}
-  </button>
-);
 
 export default ContentPage;
