@@ -3,10 +3,49 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
+import HeaderComponent from "../ui/HeaderComponent";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 40px;
+`;
+
+const ImgTagBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 30px;
+`;
+
+const BackgroundImg = styled.div`
+  width: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("${process.env.PUBLIC_URL}/background.JPG");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  color: white;
+  font-family: "Pretendard-ExtraBold";
+  font-size: 60px;
+  text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+`;
+
+const PostCategoryContainer = styled.div`
+  display: flex;
+  padding-top: 30px;
+  padding-left: 90px;
+  padding-right: 90px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 50px;
+  justify-content: center; /* 추가: 자식 요소들이 중앙에 위치하도록 함 */
 `;
 
 const TagContainer = styled.div`
