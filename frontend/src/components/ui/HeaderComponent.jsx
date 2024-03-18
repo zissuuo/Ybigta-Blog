@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Header = styled.div`
   padding-left: 48px;
@@ -17,7 +17,6 @@ const RightBox = styled.div`
   width: 102px; /* 로고와 동일한 크기로 설정하여 균형을 유지 */
   height: 40px;
 `;
-
 
 const HeaderLogo = styled.div`
   width: 102px;
@@ -40,7 +39,7 @@ const ClickableBox = styled.button`
   color: #000000;
   padding: 8px 16px;
   border-radius: 4px;
-  font-family: 'Pretendard-Medium';
+  font-family: "Pretendard-Medium";
   &:hover {
     background-color: #e5e5e5;
     color: #3b82f6;
@@ -55,23 +54,27 @@ const HeaderComponent = ({ children }) => {
   const navigate = useNavigate();
 
   const redirectToHome = () => {
-    window.location.href = 'https://ybigta.org/';
+    window.location.href = "https://ybigta.org/";
   };
 
   const redirectToArchive = () => {
-    window.location.href = 'https://ybigta.gitbook.io/archive/';
+    window.location.href = "https://ybigta.gitbook.io/archive/";
   };
 
   return (
     <Header>
       <ClickableBoxLogo onClick={redirectToHome}>
-        <img src={process.env.PUBLIC_URL + '/ybigta_logo.svg'} style={{ height: "100%" }} alt="logo" />
+        <img
+          src={process.env.PUBLIC_URL + "/ybigta_logo.svg"}
+          style={{ height: "100%" }}
+          alt="logo"
+        />
       </ClickableBoxLogo>
       <PageBox>
         <ClickableBox>About</ClickableBox>
         <ClickableBox onClick={redirectToArchive}>Archive</ClickableBox>
         <ClickableBox>Wiki</ClickableBox>
-        <ClickableBox onClick={() => navigate('/')}>Blog</ClickableBox>
+        <ClickableBox onClick={() => navigate("/")}>Blog</ClickableBox>
       </PageBox>
       <RightBox />
     </Header>

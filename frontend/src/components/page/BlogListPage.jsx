@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
 import HeaderComponent from "../ui/HeaderComponent";
+import BottomComponent from "../ui/BottomComponent";
 
 const Wrapper = styled.div`
   display: flex;
@@ -444,6 +445,7 @@ const BlogListPage = () => {
           </CategoryContainer>
         </PostCategoryContainer>
       </Wrapper>
+      <BottomComponent />
     </div>
   );
 };
