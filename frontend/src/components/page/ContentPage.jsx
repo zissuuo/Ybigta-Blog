@@ -140,7 +140,6 @@ const PostTitle = styled.span`
 const Body = styled.span`
   font-size: 17px;
   font-family: "Pretendard-Medium";
-  //width: 100%;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -225,13 +224,16 @@ const ContentPage = () => {
 
   if (!post || !posts.length) return <div>Loading...</div>;
 
-  // 현재 포스트의 인덱스를 찾음
-  const currentIndex = posts.findIndex((p) => p._id === postId);
+  // 날짜 기준으로 포스트를 정렬
+  const sortedPosts = posts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+  // 현재 포스트의 인덱스
+  const currentIndex = sortedPosts.findIndex((p) => p._id === postId);
 
   // 이전 포스트와 다음 포스트를 결정
-  const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
-  const nextPost =
-    currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
+  const prevPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+  const nextPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+
 
   const goToPost = (postId) => {
     navigate(`/posts/${postId}`);
@@ -307,15 +309,16 @@ const ContentPage = () => {
 
         </InfoBox>
 
-          <Divider />
-          <Body>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{ code: CodeBlock, img: Image }}
-            >
-              {post.content}
-            </ReactMarkdown>
-          </Body>
+        <Divider />
+
+        <Body>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{ code: CodeBlock, img: Image }}
+          >
+            {post.content}
+          </ReactMarkdown>
+        </Body>
 
         <Divider />
 
