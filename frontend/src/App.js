@@ -17,12 +17,13 @@ const AllGlobalStyle = createGlobalStyle`
     font-family: 'Pretendard-ExtraBold';
     src: url('/font/Pretendard-ExtraBold.ttf') format('truetype');
   }
-    body {
-    font-family: 'Pretendard-ExtraBold';
-    }
   @font-face {
     font-family: 'Pretendard-Regular';
     src: url('/font/Pretendard-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Pretendard-Bold';
+    src: url('/font/Pretendard-Bold.ttf') format('truetype');
   }
   @font-face {
     font-family: 'Pretendard-Light';

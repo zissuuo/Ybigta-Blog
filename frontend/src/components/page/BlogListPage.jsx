@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { css } from "styled-components";
 
 import HeaderComponent from "../ui/HeaderComponent";
 import BottomComponent from "../ui/BottomComponent";
@@ -96,6 +96,7 @@ const SearchForm = styled.form`
 
 const SearchInput = styled.input`
   height: 30px;
+  outline: none;
   padding-left: 10px;
   border-radius: 15px;
   border: none;
@@ -131,7 +132,7 @@ const PostContainer = styled.div`
   gap: 16px;
   padding-bottom: 40px;
   margin-bottom: 20px;
-  border-bottom: 1px solid #d4d4d4;
+  ${(props) => !props.isLast && css`border-bottom: 1px solid #d4d4d4;`}
 `;
 
 const InnerTagContainer = styled.div`
@@ -325,7 +326,9 @@ const BlogListPage = () => {
         <PostCategoryContainer>
           <PostWrapper>
             {filteredPosts.map((post, index) => (
-              <PostContainer key={index}>
+              <PostContainer
+                key={index}
+                isLast={index === filteredPosts.length - 1}> {/* 마지막 요소인지 확인 */}
                 {/* 제목 클릭 시 포스트로 이동 */}
                 <PostTitle onClick={() => handlePostClick(post._id)}>
                   {post.title}
@@ -420,13 +423,12 @@ const BlogListPage = () => {
                 type="text"
                 value={searchQuery}
                 onChange={handleSearchInputChange} // 변경된 핸들러 사용
-                placeholder="Search..."
+                placeholder="검색어를 입력하세요"
               />
               <SearchButton type="submit">🔎</SearchButton>
             </SearchForm>
             <span
               style={{
-                cursor: "pointer",
                 fontFamily: "Pretendard-ExtraBold",
                 fontSize: "23px",
               }}

@@ -10,48 +10,70 @@ import { prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import HeaderComponent from "../ui/HeaderComponent";
 import BottomComponent from "../ui/BottomComponent";
 
-const Title = styled.h2`
-  margin-top: 5px; // 카테고리와 제목 사이의 간격을 줄입니다.
+const Title = styled.span`
   font-size: 40px; // 크기는 이미지에 맞춰 조정하세요.
-  margin-bottom: 0px; // 제목과 날짜 사이의 간격을 줄입니다.
-  width: 90%;
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: left;
+  font-family: "Pretendard-ExtraBold";
 `;
 
 const Divider = styled.hr`
   border: none;
   height: 1px;
-  background-color: #ced4da;
+  background-color: #d4d4d4;
   margin-top: 40px; // 구분선 위의 간격을 조정하세요.
-  margin-bottom: 40px; // 구분선 아래의 간격을 조정하세요.
-  width: 90%;
-`;
-
-const Margin = styled.hr`
-  margin-bottom: 10px; // 구분선 아래의 간격을 조정하세요.
+  margin-bottom: 20px; // 구분선 아래의 간격을 조정하세요.
+  width: 100%;
 `;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 40px;
+  padding-top: 40px;
+  margin-left: 200px;
+  margin-right: 200px;
 `;
 
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+
 const Tags = styled.span`
-  padding: 3px 8px;
-  border-radius: 15px;
-  border: none;
-  background-color: #ebebeb;
-  color: #666666;
+  padding-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  height: 30px;
   cursor: pointer;
+  background-color: #ebebeb;
+  color: ${(props) =>
+    props.isSelected ? "#3b82f6" : "#666666"}; /* 조건부 색상 적용 */
+  text-align: center;
+  font-family: "Pretendard-SemiBold";
+  font-size: 13px;
+  justify-content: center;
+  align-items: center; /* 이 줄을 추가하세요 */
+  border-radius: 30px;
+  transition: color 0.1s ease;
+  &:hover {
+    color: #3b82f6;
+  }
+`;
+
+const LowerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 `;
 
 const ListButton = styled.button`
-  border: 1px solid #cccccc;
-  padding: 20px;
+  border: none;
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.3);
   margin-top: 20px;
   cursor: pointer;
   border-radius: 20px;
@@ -59,17 +81,18 @@ const ListButton = styled.button`
   background-color: white;
   width: 190px;
   height: 40px;
-  margin: 0 auto;
   font-weight: bold;
   font-size: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: "Pretendard-Bold";
 `;
 
 const MoveButton = styled.button`
   position: relative;
-  border: 1px solid #cccccc;
+  border: none;
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.3);
   padding: 20px;
   margin-top: 20px;
   cursor: pointer;
@@ -84,16 +107,16 @@ const MoveButton = styled.button`
   flex-direction: column;
   align-items: ${({ alignLeft }) => (alignLeft ? "flex-start" : "flex-end")};
   justify-content: center;
-  margin-left: ${({ alignLeft }) => (alignLeft ? "80px" : "auto")};
-  margin-right: ${({ alignLeft }) => (alignLeft ? "auto" : "80px")};
+  font-family: "Pretendard-Bold";
+  /* margin-left: ${({ alignLeft }) => (alignLeft ? "80px" : "auto")};
+  margin-right: ${({ alignLeft }) => (alignLeft ? "auto" : "80px")}; */
 `;
 
 const ButtonContainer = styled.div`
   // 버튼 두 개를 감싸는 컨테이너
   display: flex;
   justify-content: center;
-  margin-top: 50px;
-  width: 100%;
+  gap: 50px;
 `;
 
 const SubTitle = styled.span`
@@ -116,9 +139,8 @@ const PostTitle = styled.span`
 
 const Body = styled.span`
   font-size: 17px;
-  font-family: "Pretendard-Medium", sans-serif;
-  width: 90%;
-  margin: 0 auto;
+  font-family: "Pretendard-Medium";
+  //width: 100%;
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -126,11 +148,10 @@ const Body = styled.span`
 
 const Categories = styled.span`
   font-size: 15px; // 카테고리 글씨 크기 변경
-  width: 90%;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: left;
+  font-family: "Pretendard-Medium";
 `;
 
 const InnerTagContainer = styled.div`
@@ -220,45 +241,38 @@ const ContentPage = () => {
     <div>
       <HeaderComponent />
       <Wrapper>
-        <Margin />
-        {/* 카테고리 버튼 렌더링 */}
-        <Categories
-          onClick={() => handleCategoryChange(post.categories)}
-          style={{ marginleft: "10px", cursor: "pointer", gap: "10px" }}
-        >
-          {post.categories}
-        </Categories>
-
-        <div>
+        <InfoBox>
+          {/* 카테고리 버튼 렌더링 */}
+          <Categories
+            onClick={() => handleCategoryChange(post.categories)}
+            style={{ cursor: "pointer", gap: "10px", color: "#666666" }}
+          >
+            {post.categories}
+          </Categories>
           <Title>{post.title}</Title>
-          {/* 작성자, 프사, 날짜, 아웃라인 */}
-          <div
+
+        {/* 작성자, 프사, 날짜, 아웃라인 */}
+        <div
             style={{
-              margin: "0 auto",
               display: "flex",
-              alignItems: "center",
               fontSize: "16px",
-              fontWeight: "bold",
-              color: "gray",
-              width: "90%",
+              fontFamily: "Pretendard-Medium",
               flexdirection: "column",
-              alignitems: "flex-start",
+              alignItems: "center",
+              gap: "10px",
             }}
           >
-            <span>{post.author}</span>
             <img
               src={post.profileImagePath}
               alt="Author's profile"
               style={{ width: "30px", height: "30px", borderRadius: "50%" }}
             />
+            <span>{post.author}</span>
             <span
               style={{
-                margin: "9px 0 9px 0",
-                fontWeight: "bold",
-                color: "lightgray",
-                width: "90%",
+                color: "#666666",
                 flexdirection: "column",
-                alignitems: "flex-start",
+                fontFamily: "Pretendard-Medium",
               }}
             >
               {new Date(post.createdAt).toLocaleDateString()}
@@ -267,9 +281,8 @@ const ContentPage = () => {
 
           <div
             style={{
-              margin: "0 auto",
               alignItems: "center",
-              width: "90%",
+              width: "100%",
               flexDirection: "column",
               alignItems: "flex-start",
             }}
@@ -281,7 +294,7 @@ const ContentPage = () => {
                   key={tagIndex}
                   onClick={(event) => handleTagClick(tag, event)}
                   style={{
-                    marginRight: "15px",
+                    marginRight: "05px",
                     cursor: "pointer",
                     gap: "10px",
                   }}
@@ -292,6 +305,8 @@ const ContentPage = () => {
             </InnerTagContainer>
           </div>
 
+        </InfoBox>
+
           <Divider />
           <Body>
             <ReactMarkdown
@@ -301,51 +316,52 @@ const ContentPage = () => {
               {post.content}
             </ReactMarkdown>
           </Body>
-        </div>
 
         <Divider />
 
         {/* button to get back to BlogListPage */}
-        <ListButton onClick={() => navigate("/")}>목록으로 돌아가기</ListButton>
+        <LowerContainer>
+          <ListButton onClick={() => navigate("/")}>목록으로 돌아가기</ListButton>
 
-        <ButtonContainer>
+          {/* 이전 글, 다음 글 버튼 */}
+          <ButtonContainer>
           {/* 이전 글 버튼만 존재할 때 */}
           {prevPost && !nextPost && (
             <>
               <MoveButton alignLeft onClick={() => goToPost(prevPost._id)}>
-                <SubTitle alignLeft>이전 글</SubTitle>
+                <SubTitle alignLeft> 이전 글</SubTitle>
                 <PostTitle>{prevPost.title}</PostTitle>
-              </MoveButton>
-              <div></div> {/* 다음 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
-            </>
-          )}
-
-          {/* 다음 글 버튼만 존재할 때 */}
-          {!prevPost && nextPost && (
-            <>
-              <div></div> {/* 이전 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
-              <MoveButton alignRight onClick={() => goToPost(nextPost._id)}>
-                <SubTitle alignRight>다음 글</SubTitle>
-                <PostTitle>{nextPost.title}</PostTitle>
               </MoveButton>
             </>
           )}
 
-          {/* 이전 글과 다음 글 버튼 모두 존재할 때 */}
-          {prevPost && nextPost && (
-            <>
-              <MoveButton alignLeft onClick={() => goToPost(prevPost._id)}>
-                <SubTitle alignLeft>이전 글</SubTitle>
-                <PostTitle>{prevPost.title}</PostTitle>
-              </MoveButton>
-              <div></div> {/* 다음 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
-              <MoveButton alignRight onClick={() => goToPost(nextPost._id)}>
-                <SubTitle alignRight>다음 글</SubTitle>
-                <PostTitle>{nextPost.title}</PostTitle>
-              </MoveButton>
-            </>
-          )}
-        </ButtonContainer>
+            {/* 다음 글 버튼만 존재할 때 */}
+            {!prevPost && nextPost && (
+              <>
+                <div></div> {/* 이전 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
+                <MoveButton alignRight onClick={() => goToPost(nextPost._id)}>
+                  <SubTitle alignRight>다음 글</SubTitle>
+                  <PostTitle>{nextPost.title}</PostTitle>
+                </MoveButton>
+              </>
+            )}
+
+            {/* 이전 글과 다음 글 버튼 모두 존재할 때 */}
+            {prevPost && nextPost && (
+              <>
+                <MoveButton alignLeft onClick={() => goToPost(prevPost._id)}>
+                  <SubTitle alignLeft>{"<-"} 이전 글</SubTitle>
+                  <PostTitle>{prevPost.title}</PostTitle>
+                </MoveButton>
+                <div></div> {/* 다음 글 버튼과의 간격을 조절하기 위한 빈 요소 */}
+                <MoveButton alignRight onClick={() => goToPost(nextPost._id)}>
+                  <SubTitle alignRight>다음 글 {"->"}</SubTitle>
+                  <PostTitle>{nextPost.title}</PostTitle>
+                </MoveButton>
+              </>
+            )}
+          </ButtonContainer>
+        </LowerContainer>
       </Wrapper>
       <BottomComponent />
     </div>
