@@ -1,15 +1,15 @@
-import React from "react";
+import {React, useEffect} from "react";
 import {
     BrowserRouter,
     Routes,
-    Route
+    Route,
+    useLocation
 } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
 // Pages
 import BlogListPage from "./components/page/BlogListPage";
 import ContentPage from "./components/page/ContentPage";
-import TagFilteredPage from "./components/page/TagFilteredPage";
 
 
 const AllGlobalStyle = createGlobalStyle`
@@ -39,16 +39,25 @@ const AllGlobalStyle = createGlobalStyle`
   }
  `;
 
-function App(props) {
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
+function App() {
   return (
     <>
     <AllGlobalStyle />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route index element={<BlogListPage />} />
           <Route path="/posts/:postId" element={<ContentPage />} /> {/* 동적 경로 변경 */}
-          <Route path="/tags/:tagName" element={<TagFilteredPage />} />
-          <Route path="/categories/:category" element={<TagFilteredPage />} />
         </Routes>
       </BrowserRouter>
     </>
