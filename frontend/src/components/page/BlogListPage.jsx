@@ -308,9 +308,11 @@ const BlogListPage = () => {
 
   // 태그, 카테고리 중복 제거 및 오름차순 정렬
   const uniqueTags = [...new Set(posts.flatMap((post) => post.tags))].sort();
-  const uniqueCategories = [
-    ...new Set(posts.map((post) => post.categories)),
-  ].sort();
+  const uniqueCategories = ["ALL", ...new Set(posts.map((post) => post.categories))].sort((a, b) => {
+    if(a === "ALL") return -1; 
+    if(b === "ALL") return 1; 
+    return a.localeCompare(b);
+  });
 
   //if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>;
