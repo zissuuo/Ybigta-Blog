@@ -132,7 +132,11 @@ const PostContainer = styled.div`
   gap: 16px;
   padding-bottom: 40px;
   margin-bottom: 20px;
-  ${(props) => !props.isLast && css`border-bottom: 1px solid #d4d4d4;`}
+  ${(props) =>
+    !props.isLast &&
+    css`
+      border-bottom: 1px solid #d4d4d4;
+    `}
 `;
 
 const InnerTagContainer = styled.div`
@@ -183,9 +187,16 @@ const BlogListPage = () => {
     return posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   };
 
+  // 코드블록 마커 제거 함수
+  const removeCodeBlockMarkers = (text) => {
+    // 코드블록 시작과 끝 표시만 제거 (언어 표시 포함)
+    return text.replace(/```[\w+\s]*\n/g, '').replace(/\n```/g, '');
+  };
+
   // 검색 실행 함수
   const executeSearch = (e) => {
     e.preventDefault(); // 폼 기본 제출 이벤트 방지
+
     setSearchParams({
       ...Object.fromEntries(searchParams.entries()),
       search: searchQuery,
@@ -273,21 +284,27 @@ const BlogListPage = () => {
 
   // posts Data 필터링
   const filteredPosts = posts.filter((post) => {
+    // 태그 카테고리 필터링
     const hasSelectedTags =
       selectedTags.length === 0 ||
       selectedTags.every((tag) => post.tags.includes(tag));
     const hasSelectedCategory =
       !selectedCategory || post.categories.includes(selectedCategory);
-    const matchesSearchQuery = searchParams.get("search")
-      ? post.title
-          .toLowerCase()
-          .includes(searchParams.get("search").toLowerCase()) ||
-        post.content
-          .toLowerCase()
-          .includes(searchParams.get("search").toLowerCase())
+
+    // 검색쿼리 필터링
+    const searchQueryLower = searchParams.get("search") ? searchParams.get("search").toLowerCase() : "";
+    const matchesSearchQuery = searchQueryLower
+      ? removeCodeBlockMarkers(post.title.toLowerCase()).includes(searchQueryLower) ||
+        removeCodeBlockMarkers(post.outline.toLowerCase()).includes(searchQueryLower) ||
+        removeCodeBlockMarkers(post.content.toLowerCase()).includes(searchQueryLower)
       : true;
-    return hasSelectedTags && hasSelectedCategory && matchesSearchQuery;
+
+  return hasSelectedTags && hasSelectedCategory && matchesSearchQuery;
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // 필터링된 포스트가 변경될 때마다 스크롤을 맨 위로
+  }, [filteredPosts]);
 
   // 태그, 카테고리 중복 제거 및 오름차순 정렬
   const uniqueTags = [...new Set(posts.flatMap((post) => post.tags))].sort();
@@ -328,12 +345,14 @@ const BlogListPage = () => {
             {filteredPosts.map((post, index) => (
               <PostContainer
                 key={index}
-                isLast={index === filteredPosts.length - 1}> {/* 마지막 요소인지 확인 */}
+                isLast={index === filteredPosts.length - 1}
+              >
+                {" "}
+                {/* 마지막 요소인지 확인 */}
                 {/* 제목 클릭 시 포스트로 이동 */}
                 <PostTitle onClick={() => handlePostClick(post._id)}>
                   {post.title}
                 </PostTitle>
-
                 {/* 작성자, 프사, 날짜, 아웃라인 */}
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -371,7 +390,6 @@ const BlogListPage = () => {
                 >
                   {post.outline}
                 </span>
-
                 {/* 태그 및 단일 필터링 */}
                 <InnerTagContainer>
                   {post.tags.map((tag, tagIndex) => (
