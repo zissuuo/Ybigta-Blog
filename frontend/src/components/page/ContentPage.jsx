@@ -188,6 +188,25 @@ const Image = ({ node, ...props }) => (
   />
 );
 
+const markdownComponents = {
+  code: CodeBlock,
+  img: Image,
+  // h1 태그에 대한 커스텀 컴포넌트 정의
+  h1: ({node, ...props}) => (
+    <h1 style={{ fontFamily: 'Pretendard-ExtraBold' }} {...props} />
+  ),
+  // h2 태그에 대한 커스텀 컴포넌트 정의
+  h2: ({node, ...props}) => (
+    <h2 style={{ fontFamily: 'Pretendard-ExtraBold' }} {...props} />
+  ),
+  // h3 태그에 대한 커스텀 컴포넌트 정의
+  h3: ({node, ...props}) => (
+    <h3 style={{ fontFamily: 'Pretendard-ExtraBold' }} {...props} />
+  ),
+  // 다른 마크다운 요소에 대한 커스텀 컴포넌트를 추가할 수 있음
+};
+
+
 const ContentPage = () => {
   const { postId } = useParams(); // URL에서 postId를 추출
   console.log(postId);
@@ -314,7 +333,7 @@ const ContentPage = () => {
         <Body>
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            components={{ code: CodeBlock, img: Image }}
+            components={markdownComponents} // 커스텀 컴포넌트를 적용
           >
             {post.content}
           </ReactMarkdown>
