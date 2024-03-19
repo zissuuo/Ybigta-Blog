@@ -193,6 +193,11 @@ const BlogListPage = () => {
     return text.replace(/```[\w+\s]*\n/g, '').replace(/\n```/g, '');
   };
 
+  // 검색어 입력 처리 저장
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value); // 입력된 검색어를 로컬 상태로 저장
+  };
+
   // 검색 실행 함수
   const executeSearch = (e) => {
     e.preventDefault(); // 폼 기본 제출 이벤트 방지
@@ -201,11 +206,6 @@ const BlogListPage = () => {
       ...Object.fromEntries(searchParams.entries()),
       search: searchQuery,
     });
-  };
-
-  // 검색어 입력 처리 저장
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value); // 입력된 검색어를 로컬 상태로 저장
   };
 
   // 초기 포스트 페이지 로딩
@@ -273,14 +273,21 @@ const BlogListPage = () => {
     const newCategory = isDeselecting ? "" : category;
     setSelectedCategory(newCategory);
 
-    if (newCategory === "") {
-      setSearchParams(
-        selectedTags.length > 0 ? { tags: selectedTags.join("&") } : {}
-      );
-    } else {
-      setSearchParams({ tags: selectedTags.join("&"), cat: newCategory });
+    // 현재의 검색 쿼리 (searchQuery)를 유지하는 새로운 쿼리 파라미터 객체를 생성
+    const newSearchParams = {
+      ...selectedTags.length > 0 ? { tags: selectedTags.join("&") } : {},
+      ...searchQuery ? { search: searchQuery } : {}, // 검색 쿼리가 있으면 추가
+    };
+
+    if (newCategory !== "") {
+    // 새로운 카테고리가 선택되었으면, 이를 쿼리 파라미터에 추가
+      newSearchParams.cat = newCategory;
     }
+
+    // setSearchParams를 사용하여 URL의 쿼리 파라미터를 업데이트
+    setSearchParams(newSearchParams);
   };
+
 
   // posts Data 필터링
   const filteredPosts = posts.filter((post) => {
@@ -291,15 +298,14 @@ const BlogListPage = () => {
     const hasSelectedCategory =
       !selectedCategory || post.categories.includes(selectedCategory);
 
-    // 검색쿼리 필터링
-    const searchQueryLower = searchParams.get("search") ? searchParams.get("search").toLowerCase() : "";
-    const matchesSearchQuery = searchQueryLower
-      ? removeCodeBlockMarkers(post.title.toLowerCase()).includes(searchQueryLower) ||
-        removeCodeBlockMarkers(post.outline.toLowerCase()).includes(searchQueryLower) ||
-        removeCodeBlockMarkers(post.content.toLowerCase()).includes(searchQueryLower)
+    const searchQueryFromParams = searchParams.get('search') ? searchParams.get('search').toLowerCase() : "";
+    const matchesSearchQuery = searchQueryFromParams
+      ? removeCodeBlockMarkers(post.title.toLowerCase()).includes(searchQueryFromParams) ||
+        removeCodeBlockMarkers(post.outline.toLowerCase()).includes(searchQueryFromParams) ||
+        removeCodeBlockMarkers(post.content.toLowerCase()).includes(searchQueryFromParams)
       : true;
-
-  return hasSelectedTags && hasSelectedCategory && matchesSearchQuery;
+    
+    return hasSelectedTags && hasSelectedCategory && matchesSearchQuery;
   });
 
   useEffect(() => {
@@ -314,7 +320,7 @@ const BlogListPage = () => {
     return a.localeCompare(b);
   });
 
-  //if (loading) return <div>Loading...</div>
+  if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>;
 
   return (
