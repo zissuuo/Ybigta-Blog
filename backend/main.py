@@ -31,7 +31,7 @@ async def startup_db_client():
 @app.on_event("shutdown")
 async def shutdown_db_client():
     MongoDB.client.close()
-        
+
 # mongodb의 id를 PyObjectId 타입으로 선언
 class PyObjectId(str):
     @classmethod
